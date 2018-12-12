@@ -46,11 +46,12 @@ namespace BalancedHacking
             }
 
             if (tool == null && gun == null) return; // End: damage must be done by tool or hand weapon
-            bool isTool = tool == null;
 
+            bool isTool = tool != null;
+            long identity = (isTool) ? tool.OwnerIdentityId : gun.OwnerIdentityId;
 
             List<IMyPlayer> players = new List<IMyPlayer>();
-            MyAPIGateway.Players.GetPlayers(players, p => p.IdentityId == tool.OwnerIdentityId);
+            MyAPIGateway.Players.GetPlayers(players, p => p.IdentityId == identity);
             if (players.Count == 0 || // End: Player not found. this can happen if the character is an NPC
                 block.CubeGrid.BigOwners.Count == 0) return;  // End: Unowned structures take full damage
 
